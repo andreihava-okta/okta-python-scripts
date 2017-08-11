@@ -22,3 +22,9 @@ those to yoru need as well.
 
 In command prompt or shell navigate to folder where Python script is copied "cd ~/Documents/PythonScripts" and run the script e.g
 "python get_all_active_users_with_app_assignments.py"
+
+
+# Credits
+
+Special thanks to Sohaib Ajmal from the Okta Developer Support team who provided the foundation for these scripts.
+https://github.com/SohaibAjmal/Okta-UD-Scripts
