@@ -19,7 +19,7 @@ For all scripts open the script in your favorite editor (e.g. Sublime) and set f
 2) apiKey: API token from Okta org (Security -> API -> Token)
 
 If there are any required attribute such as N, attributeName, attributeValue at the top, update 
-those to yoru need as well.
+those to your needs as well.
 
 In command prompt or shell navigate to folder where Python script is copied "cd ~/Documents/PythonScripts" and run the script e.g
 "python get_all_active_users_with_app_assignments.py"

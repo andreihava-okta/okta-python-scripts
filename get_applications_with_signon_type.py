@@ -8,8 +8,7 @@ orgName = ""
 apiKey = ""
 
 api_token = "SSWS "+ apiKey
-
-headers = {'Accept':'application/json','Content-Type':'application/json','Authorization':api_token}
+headers = {'Accept':'application/json', 'Content-Type':'application/json', 'Authorization':api_token}
 
 def GetPaginatedResponse(url):
     response = requests.request("GET", url, headers=headers)
@@ -27,9 +26,11 @@ def GetPaginatedResponse(url):
     else:
         headerLink= response.headers["Link"]
         count = 1
+        
         while str(headerLink).find("rel=\"next\"") > -1:
             linkItems = str(headerLink).split(",")
             nextCursorLink = ""
+            
             for link in linkItems:
                 if str(link).find("rel=\"next\"") > -1:
                     nextCursorLink = str(link)
@@ -50,13 +51,15 @@ def GetPaginatedResponse(url):
         return returnResponseList
 
 def UDOperation():
-    url = "https://"+orgName+".com/api/v1/apps"
+    url = "https://" + orgName + ".com/api/v1/apps"
     responseJSON = GetPaginatedResponse(url)
     appCount = 0
+    
     if responseJSON != "Error":
         responseFile = open("Applications-With-Signon-Type.csv", "wb")
         writer = csv.writer(responseFile)
         writer.writerow(["label", "name", "signOnMode"])
+        
         for app in responseJSON:
             if app[u"status"] == "ACTIVE":
                 appCount = appCount + 1
