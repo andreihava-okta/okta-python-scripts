@@ -15,8 +15,8 @@ manager on Windows system
 
 For all scripts open the script in your favorite editor (e.g. Sublime) and set following variables
 
-orgName: including okta/oktapreview to your org e.g. "myorg.okta" or "myorg.oktapreview"
-apiKey: API token from Okta org (Security -> API -> Token)
+1) orgName: including okta/oktapreview to your org e.g. "myorg.okta" or "myorg.oktapreview"
+2) apiKey: API token from Okta org (Security -> API -> Token)
 
 If there are any required attribute such as N, attributeName, attributeValue at the top, update 
 those to yoru need as well.
