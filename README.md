@@ -2,6 +2,7 @@
 Python scripts that demonstrte use of Okta's REST APIs for Unviversl Directory. Description of each script
 
 1) get_all_active_users_with_app_assignments.py -> Gets all active users and their app assignments in a CSV.
+2) get_applications_with_signon_type.py -> Gets all applications and their signon methods in a CSV.
 
 # Requirements to Run Script:
 
