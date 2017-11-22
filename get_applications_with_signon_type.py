@@ -4,8 +4,8 @@ import re
 import sys
 import csv
 
-orgName = ""
-apiKey = ""
+orgName = "vulcan.okta"
+apiKey = "00LQYNhFYR-Gzwlwz5-wIiXIuiUbmjFLvcK2-nTr-4"
 
 api_token = "SSWS "+ apiKey
 headers = {'Accept':'application/json', 'Content-Type':'application/json', 'Authorization':api_token}

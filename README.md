@@ -1,8 +1,9 @@
 # Okta-Python-Scripts
-Python scripts that demonstrte use of Okta's REST APIs for Unviversl Directory. Description of each script
+Python scripts that demonstrate use of Okta's REST APIs for Unviversal Directory. Description of each script:
 
 1) get_all_active_users_with_app_assignments.py -> Gets all active users and their app assignments in a CSV.
 2) get_applications_with_signon_type.py -> Gets all applications and their signon methods in a CSV.
+3) deactivate_users_based_on_custom_attribute_value.py -> Deactivates all users in an org with the value of a custom attribute set, then outputs the deactivated users in a CSV.
 
 # Requirements to Run Script:
 
@@ -13,12 +14,12 @@ manager on Windows system
 
 # How to Run Script
 
-For all scripts open the script in your favorite editor (e.g. Sublime) and set following variables
+For all scripts open the script in your favorite editor (e.g. Sublime Text 3) and set following variables
 
 1) orgName: including okta/oktapreview to your org e.g. "myorg.okta" or "myorg.oktapreview"
 2) apiKey: API token from Okta org (Security -> API -> Token)
 
-If there are any required attribute such as N, attributeName, attributeValue at the top, update 
+If there are any required attribute such as attributeName or triggerValue at the top, update 
 those to your needs as well.
 
 In command prompt or shell navigate to folder where Python script is copied "cd ~/Documents/PythonScripts" and run the script e.g
