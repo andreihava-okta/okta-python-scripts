@@ -50,26 +50,62 @@ def GetPaginatedResponse(url):
         returnJSON = json.dumps(returnResponseList)
         return returnResponseList
 
-def UDOperation():
+def GetAccessNumber(appId, userId):
+    url = "https://" + orgName + ".com/api/v1/events?limit=1000&filter=action.objectType eq \"app.auth.sso\" and target.id eq \"" + appId + "\" and target.id eq \"" + userId + "\""
+    responseJSON = GetPaginatedResponse(url)
+
+    accessCount = 0
+
+    if responseJSON != "Error":
+        for access in responseJSON:
+            accessCount = accessCount + 1
+
+    return accessCount
+
+def GetBookmarks():
     url = "https://" + orgName + ".com/api/v1/apps"
     responseJSON = GetPaginatedResponse(url)
-    appCount = 0
-    
+
+    apps = []
+
     if responseJSON != "Error":
-        responseFile = open("Applications-With-Signon-Type.csv", "wb")
-        writer = csv.writer(responseFile)
-        writer.writerow(["label", "name", "signOnMode"])
-        
         for app in responseJSON:
             if app[u"status"] == "ACTIVE":
-                appCount = appCount + 1
-                label = app[u"label"]
-                name = app[u"name"]
-                signOnMode = app[u"signOnMode"]
-                writer.writerow([label, name, signOnMode])
+                if app[u"name"] == "bookmark":
+                    apps.append(app)
 
-        print ("Downloaded " + str(appCount) + " applications with their signon types.")
+    return apps
+
+def GetActiveUsers():
+    url = "https://" + orgName + ".com/api/v1/users?filter=status eq \"ACTIVE\""
+    responseJSON = GetPaginatedResponse(url)
+
+    users = []
+
+    if responseJSON != "Error":
+        for user in responseJSON:
+            users.append(user)
+
+    return users
+
+def UDOperation():
+    apps = GetBookmarks()
+    users = GetActiveUsers()
+
+    responseFile = open("Bookmarks-With-Usage.csv", "wb")
+    writer = csv.writer(responseFile)
+    writer.writerow(["appId", "appLabel", "userId", "userName", "numberOfSignons"])
+
+    for app in apps:
+        for user in users:
+            appId = app[u"id"]
+            appLabel = app[u"label"]
+            userId = user[u"id"]
+            userName = user[u"profile"][u"login"]
+            numberOfSignons = GetAccessNumber(appId, userId)
+
+            writer.writerow([appId, appLabel, userId, userName, numberOfSignons])
 
 if __name__ == "__main__":
-    print ("Downloading all active applications and their signon types from https://" + orgName + ".com/")
+    print ("Downloading all active bookmarks and their number of signons from https://" + orgName + ".com/")
     UDOperation()
