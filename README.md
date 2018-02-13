@@ -6,6 +6,8 @@ Python scripts that demonstrate use of Okta's REST APIs for Unviversal Directory
 3) deactivate_users_based_on_custom_attribute_value.py -> Deactivates all users in an org with the value of a custom attribute set, then outputs the deactivated users to a CSV.
 4) get_assigned_users.py -> Gets all users assigned to a specified application (user ID, user primary email and application username), then outputs the data to a CSV.
 5) get_bookmarks_with_usage.py -> Gets all bookmarks and their number of signons by user, then outputs the data to a CSV.
+6) get_staged_users.py -> Gets all currently STAGED users in the org, then outputs their data to a CSV.
+7) get_swa_with_shared_creds.py -> Gets all active SWA apps with their shared username, then outputs the data to a CSV.
 
 # Requirements to Run Script:
 
