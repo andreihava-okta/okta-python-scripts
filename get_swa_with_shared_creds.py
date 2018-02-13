@@ -3,7 +3,6 @@ import json
 import re
 import sys
 import csv
-import time
 
 orgName = ""
 apiKey = ""
@@ -17,7 +16,7 @@ def GetPaginatedResponse(url):
     responseJSON = json.dumps(response.json())
     responseList = json.loads(responseJSON)
     returnResponseList = returnResponseList + responseList
-    
+
     if "errorCode" in responseJSON:
         print "\nYou encountered following Error: \n"
         print responseJSON
@@ -25,10 +24,8 @@ def GetPaginatedResponse(url):
         return "Error"
 
     else:
-        if "/appLinks" in url:
-            return returnResponseList
-
         headerLink= response.headers["Link"]
+        count = 1
         
         while str(headerLink).find("rel=\"next\"") > -1:
             linkItems = str(headerLink).split(",")
@@ -42,38 +39,46 @@ def GetPaginatedResponse(url):
             nextLink = nextLink[1:]
             nextLink = nextLink[:-1]
             url = nextLink
+            print "\nCalling Paginated Url " + str(url) + "  " + str(count) +  " \n"
             response = requests.request("GET", url, headers=headers)
             responseJSON = json.dumps(response.json())
             responseList = json.loads(responseJSON)
             returnResponseList = returnResponseList + responseList
             headerLink= response.headers["Link"]
+            count += 1
         
         returnJSON = json.dumps(returnResponseList)
         return returnResponseList
 
-def DownloadUsers():
-    url = "https://" + orgName + ".com/api/v1/users?filter=status eq \"STAGED\""
+def GetSWAApps():
+    url = "https://" + orgName + ".com/api/v1/apps"
     responseJSON = GetPaginatedResponse(url)
 
+    apps = []
+
     if responseJSON != "Error":
-        userFile = open("Staged-Users.csv", "wb")
-        writer = csv.writer(userFile)
-        writer.writerow(["userId", "firstName", "lastName", "email", "login", "created", "lastUpdated"])
-        userCount = 0
-        
-        for user in responseJSON:
-            userCount = userCount + 1
-            userId = user[u"id"]
-            firstName  = user[u"profile"][u"firstName"]
-            lastName = user[u"profile"][u"lastName"]
-            email = user[u"profile"][u"email"]
-            login = user[u"profile"][u"login"]
-            created = user[u"created"]
-            lastUpdated = user[u"lastUpdated"]
-            writer.writerow([userId, firstName, lastName, email, login, created, lastUpdated])
-            
-        print ("Downloaded " + str(userCount) + " users in the STAGED status.")
+        for app in responseJSON:
+            if app[u"status"] == "ACTIVE":
+                if app[u"signOnMode"] == "AUTO_LOGIN":
+                    if app[u"credentials"][u"scheme"] == "SHARED_USERNAME_AND_PASSWORD":
+                        apps.append(app)
+
+    return apps
+
+def UDOperation():
+    apps = GetSWAApps()
+
+    responseFile = open("SWA-Apps-With-Shared-Creds.csv", "wb")
+    writer = csv.writer(responseFile)
+    writer.writerow(["appId", "appLabel", "appUserName"])
+
+    for app in apps:
+        appId = app[u"id"]
+        appLabel = app[u"label"]
+        appUserName = app[u"credentials"][u"userName"]
+
+        writer.writerow([appId, appLabel, appUserName])
 
 if __name__ == "__main__":
-    print "Downloading all staged users from https://" + orgName + ".com/"
-    DownloadUsers()
+    print ("Downloading all active SWA apps with their shared username from https://" + orgName + ".com/")
+    UDOperation()
